@@ -1,22 +1,27 @@
+import br.com.ConexaoBanco.MySqlConnection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Main {
 
-    public static void main(String[] args) {
-        MysqlConnect conexao = MysqlConnect.getDbCon();
+    public static void main(String[] args) throws SQLException {
+        java.sql.Connection conn = MySqlConnection.getConnection();
 
-        try {
-            ResultSet rs = conexao.query("select * from Produto");
+        Statement statement = conn.createStatement();
 
-            while (rs.next()) {
-                int i = rs.getInt("id");
-                String nome = rs.getString("nome");
-                System.out.println("-> = " + i + " " + nome);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ResultSet result = statement.executeQuery("SELECT * FROM Cliente");
+
+        while(result.next()) {
+            System.out.println("Resultado da busca: ");
+            System.out.println("ID: " + result.getString(1));
+            System.out.println("Nome: " + result.getString(2));
+            System.out.println("Saldo: " + result.getString(3));
+            System.out.println();
+
         }
 
+        statement.close();
     }
 }
