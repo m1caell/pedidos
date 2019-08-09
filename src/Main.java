@@ -1,4 +1,4 @@
-import br.com.ConexaoBanco.MySqlConnection;
+import br.com.bdConnection.MySqlConnection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

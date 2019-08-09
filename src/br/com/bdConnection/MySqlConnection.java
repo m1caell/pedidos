@@ -1,4 +1,4 @@
-package br.com.ConexaoBanco;
+package br.com.bdConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
