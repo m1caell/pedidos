@@ -1,10 +1,7 @@
 package br.com.repository;
-
-import br.com.bdConnection.MySqlConnection;
-
+import br.com.bdConnection.MysqlConnect;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Address {
 
@@ -16,10 +13,8 @@ public class Address {
     private String uf;
 
     public Address(int clientId, String address, int addressNumber, String city, String uf) throws SQLException {
-        java.sql.Connection conn = MySqlConnection.getConnection();
-        Statement statement = conn.createStatement();
-
-        ResultSet result = statement.executeQuery("SELECT (id  + 1) AS id FROM Endereco ORDER BY id DESC LIMIT 1");
+        MysqlConnect conn = MysqlConnect.getDbCon();
+        ResultSet result = conn.query("SELECT (id  + 1) AS id FROM Endereco ORDER BY id DESC LIMIT 1");
 
         while (result.next()) {
             this.id = Integer.parseInt(result.getString(1));
@@ -31,26 +26,21 @@ public class Address {
         this.city = city;
         this.uf = uf;
 
-        statement.close();
         saveData();
     }
 
     public void saveData() throws SQLException {
-        java.sql.Connection conn = MySqlConnection.getConnection();
-        Statement statement = conn.createStatement();
-        ResultSet result = statement.executeQuery("SELECT * FROM Endereco WHERE id = '"+this.id+"' ");
+        MysqlConnect conn = MysqlConnect.getDbCon();
+        ResultSet result = conn.query("SELECT * FROM Endereco WHERE id = '"+this.id+"' ");
 
         if(!result.next()) {
-            statement.executeUpdate("INSERT INTO Endereco (idCliente, endereco, numero, cidade, uf) " +
+            conn.insert("INSERT INTO Endereco (idCliente, endereco, numero, cidade, uf) " +
                     "VALUES ('"+this.clientId+"', '"+this.address+"', '"+this.addressNumber+"', '"+this.city+"', '"+this.uf+"')");
         } else {
-            statement.executeUpdate("UPDATE Endereco " +
+            conn.insert("UPDATE Endereco " +
                     "SET idCliente = '"+this.clientId+"', endereco =  '"+this.address+"', numero = '"+this.addressNumber+"', cidade = '"+this.city+"', uf = '"+this.uf+"' " +
                     "WHERE id = '"+this.id+"' ;");
         }
-
-        statement.close();
-
     }
 
     public int getId() {

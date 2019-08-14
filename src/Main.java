@@ -1,9 +1,8 @@
-import br.com.bdConnection.MySqlConnection;
-import br.com.repository.Client;
+import br.com.bdConnection.MysqlConnect;
 import br.com.repository.Address;
+import br.com.repository.Client;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class Main {
@@ -11,9 +10,7 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws SQLException {
-        java.sql.Connection conn = MySqlConnection.getConnection();
-
-        Statement statement = conn.createStatement();
+        MysqlConnect conn = MysqlConnect.getDbCon();
 
         System.out.println("Digite o nome do cliente: ");
         String nome = scanner.nextLine();
@@ -23,7 +20,7 @@ public class Main {
 
         Client client = new Client(nome, saldo);
 
-        ResultSet result = statement.executeQuery("SELECT * FROM Cliente WHERE id = '"+client.getId()+"' ");
+        ResultSet result = conn.query("SELECT * FROM Cliente WHERE id = '"+client.getId()+"' ");
 
         while(result.next()) {
             System.out.println("Usuário " + " ID: " + result.getString(1) + " - Nome: " + result.getString(2) +  " - Saldo: " + result.getString(3) + " criado com sucesso!" );
@@ -44,7 +41,7 @@ public class Main {
 
         Address clientAddress = new Address(client.getId(), address, addressNumber, city, uf);
 
-        result = statement.executeQuery("SELECT * FROM Endereco WHERE id = '"+clientAddress.getId()+"' ");
+        result = conn.query("SELECT * FROM Endereco WHERE id = '"+clientAddress.getId()+"' ");
 
         while(result.next()) {
             System.out.println("O endereco: " +
@@ -56,8 +53,5 @@ public class Main {
                     "foi registrado para o usuário " + client.getName());
             System.out.println();
         }
-
-
-        statement.close();
     }
 }
