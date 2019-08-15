@@ -12,7 +12,7 @@ public final class MysqlConnect {
     private Statement statement;
     public static MysqlConnect db;
     private MysqlConnect() {
-        String url= "jdbc:mysql://192.168.64.2:3306/";
+        String url= "jdbc:mysql://localhost/";
         String dbName = "pedidos";
         String driver = "com.mysql.jdbc.Driver";
         String userName = "administrador";

@@ -5,11 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Client {
-    private int id;
+    private Integer id;
     private String name;
-    private double saldo;
+    private Double balance;
 
-    public Client(String name, double saldo) throws SQLException {
+    public Client(String name, Double balance) throws SQLException {
         MysqlConnect conn = MysqlConnect.getDbCon();
 
         ResultSet result = conn.query("SELECT (id  + 1) AS id FROM Cliente ORDER BY id DESC LIMIT 1");
@@ -18,12 +18,12 @@ public class Client {
             this.id = Integer.parseInt(result.getString(1));
         }
         this.name = name;
-        this.saldo = saldo;
+        this.balance = balance;
 
         saveData();
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -31,8 +31,8 @@ public class Client {
         return this.name;
     }
 
-    public double getSaldo() {
-        return this.saldo;
+    public Double getSaldo() {
+        return this.balance;
     }
 
     public void setName(String name) {
@@ -40,21 +40,21 @@ public class Client {
     }
 
     public void addSaldo(double saldo) {
-        this.saldo = this.saldo + saldo;
+        this.balance = this.balance + saldo;
     }
 
     public void remSaldo(double saldo) {
-        this.saldo = this.saldo - saldo;
+        this.balance = this.balance - saldo;
     }
 
-    public void saveData() throws SQLException {
+    private void saveData() throws SQLException {
         MysqlConnect conn = MysqlConnect.getDbCon();
         ResultSet result = conn.query("SELECT * FROM Cliente WHERE id = '"+this.id+"' ");
 
         if(!result.next()) {
-            conn.insert("INSERT INTO Cliente (nome, saldo) VALUES ('"+this.name+"', '"+this.saldo+"')");
+            conn.insert("INSERT INTO Cliente (nome, saldo) VALUES ('"+this.name+"', '"+this.balance+"')");
         } else {
-            conn.insert("UPDATE Cliente SET nome = '"+this.name+"', saldo =  '"+this.saldo+"' WHERE id = '"+this.id+"' ;");
+            conn.insert("UPDATE Cliente SET nome = '"+this.name+"', saldo =  '"+this.balance+"' WHERE id = '"+this.id+"' ;");
         }
     }
 }

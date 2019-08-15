@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 public class Address {
 
-    private int id;
-    private int clientId;
+    private Integer id;
+    private Integer clientId;
     private String address;
-    private int addressNumber;
+    private Integer addressNumber;
     private String city;
     private String uf;
 
-    public Address(int clientId, String address, int addressNumber, String city, String uf) throws SQLException {
+    public Address(Integer clientId, String address, Integer addressNumber, String city, String uf) throws SQLException {
         MysqlConnect conn = MysqlConnect.getDbCon();
         ResultSet result = conn.query("SELECT (id  + 1) AS id FROM Endereco ORDER BY id DESC LIMIT 1");
 
@@ -43,11 +43,11 @@ public class Address {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public int getClientId() {
+    public Integer getClientId() {
         return clientId;
     }
 
@@ -63,7 +63,7 @@ public class Address {
         this.address = address;
     }
 
-    public int getAddressNumber() {
+    public Integer getAddressNumber() {
         return addressNumber;
     }
 
